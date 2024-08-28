@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+    <changeSet id="14-26-25-add-main-quest" author="pkorchagin">
+        <createTable tableName="quest">
+            <column name="id" type="bigserial">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="main_text" type="varchar(512)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="correct_answer" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="wrong_answer" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="loose_text" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

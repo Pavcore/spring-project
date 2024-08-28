@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>No login</title>
+</head>
+<body>
+<h2>
+    <span th:text="${incorrectData}"></span>
+    <form th:action="${path}" method="get">
+        <br>
+        <input type="submit" value="Попробовать снова">
+    </form>
+</h2>
+</body>
+</html>

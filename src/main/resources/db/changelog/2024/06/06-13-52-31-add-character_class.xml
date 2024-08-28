@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+    <changeSet id="06-13-52-31-add-character_class" author="pkorchagin">
+        <createTable tableName="character_class">
+            <column name="value" type="varchar(32)">
+                <constraints nullable="false"
+                             primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="06-13-52-31-add-character_class-value" author="pkorchagin">
+        <insert tableName="character_class">
+            <column name="value">BARBARIAN</column>
+        </insert>
+        <insert tableName="character_class">
+            <column name="value">PALADIN</column>
+        </insert>
+        <insert tableName="character_class">
+            <column name="value">SORCERER</column>
+        </insert>
+        <insert tableName="character_class">
+            <column name="value">NECROMANCER</column>
+        </insert>
+        <insert tableName="character_class">
+            <column name="value">AMAZON</column>
+        </insert>
+        <insert tableName="character_class">
+            <column name="value">DRUID</column>
+        </insert>
+        <insert tableName="character_class">
+            <column name="value">ASSASSIN</column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

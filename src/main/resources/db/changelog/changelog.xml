@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <include file="/db/changelog/2024/06/06-14-16-25-add-main-quest.xml" relativeToChangelogFile="false"/>
+    <include file="/db/changelog/2024/06/17-04-49-49-add-quest-info.xml" relativeToChangelogFile="false"/>
+    <include file="/db/changelog/2024/06/06-13-52-31-add-character_class.xml" relativeToChangelogFile="false"/>
+    <include file="/db/changelog/2024/06/06-13-44-25-add-character.xml" relativeToChangelogFile="false"/>
+    <include file="/db/changelog/2024/06/06-12-00-00-add-user.xml" relativeToChangelogFile="false"/>
+    <include file="/db/changelog/2024/06/06-12-00-00-add-character-fk-user.xml" relativeToChangelogFile="false"/>
+
+</databaseChangeLog>

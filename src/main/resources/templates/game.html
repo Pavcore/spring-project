@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game</title>
+</head>
+<body>
+<h2>
+    <span th:text="${stage}"></span>
+    <form action="/mainGame" method="post">
+        <label>
+            <input type="radio" name="nextStage" value="next">
+        </label> <span th:text="${firstAnswer}"></span>
+        <br>
+        <label>
+            <input type="radio" name="nextStage" value="lose">
+        </label> <span th:text="${secondAnswer}"></span>
+        <br>
+        <input type="submit">
+    </form>
+</h2>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stat</title>
+</head>
+<body>
+<h3>
+    Количество игр : <span th:text="${gameQuantity}"></span>
+</h3>
+<h3>
+    Список персонажей : <span th:text="${characterList}"></span>
+</h3>
+<form action="/gameWin" method="get">
+    <input type="submit" value="Вернуться назад">
+</form>
+</body>
+</html>
