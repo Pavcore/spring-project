@@ -28,8 +28,7 @@ public class IndexController {
     }
 
     @PostMapping("/index/create")
-    public ModelAndView create(HttpServletRequest req) {
-        ModelAndView modelAndView = new ModelAndView();
+    public ModelAndView create(HttpServletRequest req, ModelAndView modelAndView) {
         HttpSession session = req.getSession(true);
         if (characterService.save(req, session)) {
             gameService.increaseGameAmount();

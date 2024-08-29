@@ -21,9 +21,7 @@ public class LoginController {
 
     @GetMapping("/")
     public ModelAndView empty() {
-        ModelAndView modelAndView = new ModelAndView("login");
-        modelAndView.setViewName("/login");
-        return modelAndView;
+        return new ModelAndView("/login");
     }
 
     @GetMapping("/login")
@@ -39,8 +37,8 @@ public class LoginController {
     @PostMapping("/login")
     public ModelAndView login(@RequestParam String login,
                               @RequestParam String password,
-                              HttpServletRequest req) {
-        ModelAndView modelAndView = new ModelAndView();
+                              HttpServletRequest req,
+                              ModelAndView modelAndView) {
         if (loginService.login(login, password)) {
             req.getSession().setAttribute("login", login);
             modelAndView.setViewName("index");
@@ -55,8 +53,8 @@ public class LoginController {
 
     @PostMapping("/registration")
     public ModelAndView registration(@RequestParam String login,
-                                     @RequestParam String password) {
-        ModelAndView modelAndView = new ModelAndView();
+                                     @RequestParam String password,
+                                     ModelAndView modelAndView) {
         modelAndView = loginService.register(login, password, modelAndView);
         return modelAndView;
     }

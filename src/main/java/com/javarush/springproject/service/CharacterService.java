@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 public class CharacterService {
@@ -32,13 +31,15 @@ public class CharacterService {
         User user = getUserFromSession(session);
         String classOfCharacter = req.getParameter("characterClass");
         String nameOfCharacter = req.getParameter("characterName");
-        Character character = Character.builder()
-                .name(nameOfCharacter)
-                .characterClass(CharacterClass.getClass(classOfCharacter))
-                .user(user)
-                .build();
-        Character byName = findByName(nameOfCharacter);
+        Character byName = characterRepository.findByName(nameOfCharacter)
+                .findFirst()
+                .orElse(null);
         if (byName == null) {
+            Character character = Character.builder()
+                    .name(nameOfCharacter)
+                    .characterClass(CharacterClass.getClass(classOfCharacter))
+                    .user(user)
+                    .build();
             characterRepository.save(character);
             return true;
         } else return false;
@@ -46,26 +47,18 @@ public class CharacterService {
 
     @Transactional
     public boolean haveCharacterCreated(HttpServletRequest req, HttpSession session) {
-        Character character = findByName(req.getParameter("createCharacter"));
+        String createCharacter = req.getParameter("createCharacter");
+        Character character = characterRepository.findByName(createCharacter)
+                .findFirst()
+                .orElse(null);
         User user = getUserFromSession(session);
         List<Character> characterList = user.getCharacters();
         return characterList.contains(character);
     }
 
-    private Character findByName(String name) {
-        Character build = Character.builder()
-                .name(name)
-                .build();
-        Stream<Character> characterStream = characterRepository.findByName(build.getName());
-        return characterStream.findFirst().orElse(null);
-    }
-
     private User getUserFromSession(HttpSession session) {
         String login = session.getAttribute("login").toString();
-        User build = User.builder()
-                .login(login)
-                .build();
-        return userRepository.findByLogin(build.getLogin())
+        return userRepository.findByLogin(login)
                 .findFirst()
                 .orElse(null);
     }

@@ -30,14 +30,12 @@ public class GameController {
     }
 
     @PostMapping("/mainGame")
-    public ModelAndView nextStage(HttpServletRequest req) {
-        ModelAndView modelAndView = new ModelAndView("game");
+    public ModelAndView nextStage(HttpServletRequest req, ModelAndView modelAndView) {
         return gameService.mainGame(req, modelAndView);
     }
 
     @PostMapping("/statistic")
-    public ModelAndView gameStatistic(HttpServletRequest req) {
-        ModelAndView modelAndView = new ModelAndView();
+    public ModelAndView gameStatistic(HttpServletRequest req, ModelAndView modelAndView) {
         return gameService.gameStatistics(req, modelAndView);
     }
 }

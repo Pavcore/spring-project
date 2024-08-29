@@ -40,6 +40,7 @@ public class GameService {
     }
 
     public ModelAndView mainGame(HttpServletRequest req, ModelAndView modelAndView) {
+        modelAndView.setViewName("game");
         String nextStage = req.getParameter("nextStage");
         modelAndView.getModel().get("nextStage");
         if (nextStage != null && nextStage.equals("lose")) {
@@ -63,11 +64,8 @@ public class GameService {
 
     private List<Character> getAllUserCharacters(HttpSession session) {
         String login = (String) session.getAttribute("login");
-        User build = User.builder()
-                .login(login)
-                .build();
         User user = userRepository
-                .findByLogin(build.getLogin())
+                .findByLogin(login)
                 .findFirst()
                 .get();
         return user.getCharacters();
