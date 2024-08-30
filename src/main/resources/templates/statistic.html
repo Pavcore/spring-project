@@ -11,7 +11,7 @@
 <h3>
     Список персонажей : <span th:text="${characterList}"></span>
 </h3>
-<form action="/gameWin" method="get">
+<form th:action="@{/gameWin}" method="get">
     <input type="submit" value="Вернуться назад">
 </form>
 </body>

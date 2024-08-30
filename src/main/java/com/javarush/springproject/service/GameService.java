@@ -3,13 +3,12 @@ package com.javarush.springproject.service;
 import com.javarush.springproject.dbo.UserRepo;
 import com.javarush.springproject.entity.Character;
 import com.javarush.springproject.entity.User;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -32,17 +31,15 @@ public class GameService {
     }
 
     @Transactional
-    public ModelAndView gameStatistics(HttpServletRequest req, ModelAndView modelAndView) {
+    public ModelAndView gameStatistics(Principal principal, ModelAndView modelAndView) {
         modelAndView.addObject("gameQuantity", gameQuantity());
-        modelAndView.addObject("characterList", getAllUserCharacters(req.getSession()));
+        modelAndView.addObject("characterList", getAllUserCharacters(principal));
         modelAndView.setViewName("statistic");
         return modelAndView;
     }
 
-    public ModelAndView mainGame(HttpServletRequest req, ModelAndView modelAndView) {
+    public ModelAndView mainGame(String nextStage, ModelAndView modelAndView) {
         modelAndView.setViewName("game");
-        String nextStage = req.getParameter("nextStage");
-        modelAndView.getModel().get("nextStage");
         if (nextStage != null && nextStage.equals("lose")) {
             questService.setAttributeQuest(modelAndView, level);
             level = 1;
@@ -57,15 +54,15 @@ public class GameService {
         return modelAndView;
     }
 
-    public ModelAndView getGame(ModelAndView modelAndView) {
+    public ModelAndView startGame(ModelAndView modelAndView) {
+        modelAndView.setViewName("game");
         questService.setAttributeQuest(modelAndView, level);
         return modelAndView;
     }
 
-    private List<Character> getAllUserCharacters(HttpSession session) {
-        String login = (String) session.getAttribute("login");
+    private List<Character> getAllUserCharacters(Principal principal) {
         User user = userRepository
-                .findByLogin(login)
+                .findByLogin(principal.getName())
                 .findFirst()
                 .get();
         return user.getCharacters();

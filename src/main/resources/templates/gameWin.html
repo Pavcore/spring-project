@@ -10,10 +10,10 @@
     <br>
     Вы прошли игру! Поздравляю!
     <br>
-    <form action="/index" method="get">
+    <form th:action="@{/index}" method="get">
         <input type="submit" value="Начать сначала">
     </form>
-    <form action="/statistic" method="post">
+    <form th:action="@{/statistic}" method="post">
         <input type="submit" value="Посмотреть статистику">
     </form>
 </h2>

@@ -4,20 +4,23 @@
     <title>Login</title>
 </head>
 <body>
-<form action="login" method="post">
-    <h2>
-        Enter login : <label>
-        <input name="login">
-    </label>
-        <br><br>
-        Enter password : <label>
-        <input name="password">
-    </label>
-        <br><br>
+<form th:action="@{/login}" method="post">
+    <div>
+        <label for="login">Login:</label>
+        <input type="text" id="login" name="username" required>
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="text" id="password" name="password" required>
+    </div>
+    <div>
         <input type="submit" value="Авторизоваться">
-    </h2>
+    </div>
+    <div th:if="${param.error}">
+        <p style="color:#e10c0c">Invalid username or password</p>
+    </div>
 </form>
-<form action="registration" method="get">
+<form th:action="@{registration}" method="get">
     <input type="submit" value="Зарегистрироваться">
 </form>
 </body>

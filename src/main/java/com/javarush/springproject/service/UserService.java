@@ -1,10 +1,15 @@
 package com.javarush.springproject.service;
 
 import com.javarush.springproject.dbo.UserRepo;
+import com.javarush.springproject.dto.UserResponseTo;
 import com.javarush.springproject.entity.User;
+import com.javarush.springproject.mapper.MapperResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.security.Principal;
 
 @Service
 public class UserService {
@@ -16,25 +21,32 @@ public class UserService {
     }
 
     @Transactional
-    public User createUser(User user) {
-        return userRepository.save(user);
-    }
-
-    public User findUserByUsername(String username) {
-        return null;
-    }
-
-    public User findUserByID(Long id) {
-        return null;
+    public UserResponseTo updateUserLogin(String editLogin, Principal principal, ModelAndView modelAndView) {
+        User user = getUser(principal);
+        user.setLogin(editLogin);
+        userRepository.save(user);
+        return MapperResponse.map(user);
     }
 
     @Transactional
-    public User updateUser(Long id, User user) {
-        return null;
+    public UserResponseTo updateUserPassword(String editPassword, Principal principal, ModelAndView modelAndView) {
+        User user = getUser(principal);
+        user.setPassword(editPassword);
+        userRepository.save(user);
+        return MapperResponse.map(user);
     }
 
     @Transactional
-    public void deleteUser(Long id) {
+    public void deleteUser(Principal principal, ModelAndView modelAndView) {
+        User user = getUser(principal);
+        userRepository.delete(user);
+        modelAndView.setViewName("redirect:/");
+    }
 
+    private User getUser(Principal principal) {
+        return userRepository.findByLogin(principal
+                        .getName())
+                .findFirst()
+                .get();
     }
 }

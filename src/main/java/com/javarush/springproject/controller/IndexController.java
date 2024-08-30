@@ -1,14 +1,15 @@
 package com.javarush.springproject.controller;
 
+import com.javarush.springproject.dto.CharacterRequestTo;
+import com.javarush.springproject.exception.CreateCharacterException;
+import com.javarush.springproject.exception.LoadCharacterException;
 import com.javarush.springproject.service.CharacterService;
 import com.javarush.springproject.service.GameService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.security.Principal;
 
 @RestController("/index")
 public class IndexController {
@@ -27,33 +28,25 @@ public class IndexController {
         return new ModelAndView("index");
     }
 
-    @PostMapping("/index/create")
-    public ModelAndView create(HttpServletRequest req, ModelAndView modelAndView) {
-        HttpSession session = req.getSession(true);
-        if (characterService.save(req, session)) {
+    @PostMapping("/create")
+    public ModelAndView create(@ModelAttribute CharacterRequestTo characterRequestTo,
+                               ModelAndView modelAndView,
+                               Principal principal) {
+        if (characterService.save(principal, characterRequestTo)) {
             gameService.increaseGameAmount();
             modelAndView.setViewName("redirect:/game");
-        } else {
-            String incorrectData = "this name is already taken";
-            modelAndView.addObject("incorrectData", incorrectData);
-            modelAndView.addObject("path", "/index");
-            modelAndView.setViewName("dataError");
-        }
+        } else throw new CreateCharacterException("This name already exists");
         return modelAndView;
     }
 
-    @PostMapping("/index/load")
-    public ModelAndView load(HttpServletRequest req, ModelAndView modelAndView) {
-        HttpSession session = req.getSession(true);
-        if (characterService.haveCharacterCreated(req, session)) {
+    @PostMapping("/load")
+    public ModelAndView load(@RequestParam String createCharacter,
+                             Principal principal,
+                             ModelAndView modelAndView) {
+        if (characterService.haveCharacterCreated(principal, createCharacter)) {
             gameService.increaseGameAmount();
             modelAndView.setViewName("redirect:/game");
-        } else {
-            String incorrectData = "you didn't create this character";
-            modelAndView.addObject("incorrectData", incorrectData);
-            modelAndView.addObject("path", "/index");
-            modelAndView.setViewName("dataError");
-        }
+        } else throw new LoadCharacterException("Character not found");
         return modelAndView;
     }
 }

@@ -23,28 +23,28 @@
     <br><br>
     Советую поговорить с Акарой. Похоже, что она руководит этим лагерем. Может, она скажет вам больше.
     <br><br>
-    <form action="/index/create" method="post">
+    <form th:action="@{/create}" method="post">
         Введите имя персонажа: <label>
-        <input name="characterName"/>
+        <input name="name"/>
     </label>
         <br><br>
         Выберите класс персонажа:
         <label>
             <select name="characterClass">
-                <option>Barbarian</option>
-                <option>Paladin</option>
-                <option>Sorcerer</option>
-                <option>Necromancer</option>
-                <option>Amazon</option>
-                <option>Druid</option>
-                <option>Assassin</option>
+                <option>BARBARIAN</option>
+                <option>PALADIN</option>
+                <option>SORCERER</option>
+                <option>NECROMANCER</option>
+                <option>AMAZON</option>
+                <option>DRUID</option>
+                <option>ASSASSIN</option>
             </select>
         </label>
         <br>
         <input type="submit" value="Играть">
     </form>
     <br>
-    <form action="/index/load" method="post">
+    <form th:action="@{/load}" method="post">
         Если вы хотите поиграть за ранее созданного персонажа, введите его имя : <label>
         <input name="createCharacter"/>
     </label>

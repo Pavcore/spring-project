@@ -1,11 +1,12 @@
 package com.javarush.springproject.controller;
 
+import com.javarush.springproject.dto.UserRequestTo;
 import com.javarush.springproject.service.LoginService;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -35,27 +36,13 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ModelAndView login(@RequestParam String login,
-                              @RequestParam String password,
-                              HttpServletRequest req,
-                              ModelAndView modelAndView) {
-        if (loginService.login(login, password)) {
-            req.getSession().setAttribute("login", login);
-            modelAndView.setViewName("index");
-        } else {
-            String incorrectData = "incorrect login or password";
-            modelAndView.addObject("incorrectData", incorrectData);
-            modelAndView.addObject("path", "/login");
-            modelAndView.setViewName("dataError");
-        }
+    public ModelAndView login(ModelAndView modelAndView) {
         return modelAndView;
     }
 
     @PostMapping("/registration")
-    public ModelAndView registration(@RequestParam String login,
-                                     @RequestParam String password,
-                                     ModelAndView modelAndView) {
-        modelAndView = loginService.register(login, password, modelAndView);
+    public ModelAndView registration(@ModelAttribute @Valid UserRequestTo userRequestTo, ModelAndView modelAndView) {
+        modelAndView = loginService.register(userRequestTo, modelAndView);
         return modelAndView;
     }
 }

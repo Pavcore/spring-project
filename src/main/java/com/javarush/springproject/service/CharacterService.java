@@ -2,15 +2,17 @@ package com.javarush.springproject.service;
 
 import com.javarush.springproject.dbo.CharacterRepo;
 import com.javarush.springproject.dbo.UserRepo;
-import com.javarush.springproject.dto.CharacterClass;
+import com.javarush.springproject.dto.CharacterRequestTo;
+import com.javarush.springproject.dto.CharacterResponseTo;
 import com.javarush.springproject.entity.Character;
 import com.javarush.springproject.entity.User;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+import com.javarush.springproject.mapper.MapperRequest;
+import com.javarush.springproject.mapper.MapperResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -27,38 +29,45 @@ public class CharacterService {
     }
 
     @Transactional
-    public boolean save(HttpServletRequest req, HttpSession session) {
-        User user = getUserFromSession(session);
-        String classOfCharacter = req.getParameter("characterClass");
-        String nameOfCharacter = req.getParameter("characterName");
-        Character byName = characterRepository.findByName(nameOfCharacter)
-                .findFirst()
-                .orElse(null);
+    public boolean save(Principal principal, CharacterRequestTo characterRequestTo) {
+        User user = getUserFromSession(principal);
+        Character byName = getCharacter(characterRequestTo.getName());
         if (byName == null) {
-            Character character = Character.builder()
-                    .name(nameOfCharacter)
-                    .characterClass(CharacterClass.getClass(classOfCharacter))
-                    .user(user)
-                    .build();
-            characterRepository.save(character);
+            Character newCharacter = MapperRequest.map(characterRequestTo);
+            newCharacter.setUser(user);
+            characterRepository.save(newCharacter);
             return true;
         } else return false;
     }
+    
+    public void delete(Principal principal, CharacterRequestTo characterRequestTo) {
+        Character character = getCharacter(characterRequestTo.getName());
+        characterRepository.delete(character);
+    }
+    
+    public CharacterResponseTo updateCharacterName(CharacterRequestTo characterRequestTo) {
+        Character character = getCharacter(characterRequestTo.getName());
+        character.setName(characterRequestTo.getName());
+        characterRepository.save(character);
+        return MapperResponse.map(character);
+    }
 
     @Transactional
-    public boolean haveCharacterCreated(HttpServletRequest req, HttpSession session) {
-        String createCharacter = req.getParameter("createCharacter");
-        Character character = characterRepository.findByName(createCharacter)
-                .findFirst()
-                .orElse(null);
-        User user = getUserFromSession(session);
+    public boolean haveCharacterCreated(Principal principal, String name) {
+        Character character = getCharacter(name);
+        User user = getUserFromSession(principal);
         List<Character> characterList = user.getCharacters();
         return characterList.contains(character);
     }
 
-    private User getUserFromSession(HttpSession session) {
-        String login = session.getAttribute("login").toString();
-        return userRepository.findByLogin(login)
+    private Character getCharacter(String name) {
+        return characterRepository.findByName(name)
+                .findFirst()
+                .orElse(null);
+    }
+
+    private User getUserFromSession(Principal principal) {
+        return userRepository.findByLogin(principal.getName())
                 .findFirst()
                 .orElse(null);
     }
