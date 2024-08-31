@@ -5,13 +5,17 @@
 </head>
 <body>
 <form th:action="@{/registration}" method="post">
-    <h2>
-        Come up with login : <input name="login">
-        <br><br>
-        Come up with password : <input name="password">
-        <br><br>
-        <input type="submit" value="Зарегистрироваться">
-    </h2>
+    <div>
+        <label th:text="#{come_up_with_login}"></label>
+        <input type="text" name="login">
+    </div>
+    <br>
+    <div>
+        <label th:text="#{come_up_with_password}"></label>
+        <input type="text" name="password">
+    </div>
+    <br>
+    <input type="submit" th:value="#{sign_up}">
 </form>
 </body>
 </html>

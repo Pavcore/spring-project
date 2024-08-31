@@ -6,22 +6,28 @@
 <body>
 <form th:action="@{/login}" method="post">
     <div>
-        <label for="login">Login:</label>
+        <label for="login" th:text="#{login}"></label>
         <input type="text" id="login" name="username" required>
     </div>
+    <br>
     <div>
-        <label for="password">Password:</label>
+        <label for="password" th:text="#{password}"></label>
         <input type="text" id="password" name="password" required>
     </div>
+    <br>
     <div>
-        <input type="submit" value="Авторизоваться">
+        <input type="submit" th:value="#{sign_in}">
     </div>
     <div th:if="${param.error}">
-        <p style="color:#e10c0c">Invalid username or password</p>
+        <p style="color:#e10c0c" th:text="#{invalid_u_or_p}"></p>
     </div>
 </form>
+<br>
 <form th:action="@{registration}" method="get">
-    <input type="submit" value="Зарегистрироваться">
+    <input type="submit" th:value="#{sign_up}">
 </form>
+<br>
+<a href="?lang=en">English</a>
+<a href="?lang=ru">Русский</a>
 </body>
 </html>

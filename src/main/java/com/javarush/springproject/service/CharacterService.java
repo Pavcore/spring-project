@@ -6,6 +6,7 @@ import com.javarush.springproject.dto.CharacterRequestTo;
 import com.javarush.springproject.dto.CharacterResponseTo;
 import com.javarush.springproject.entity.Character;
 import com.javarush.springproject.entity.User;
+import com.javarush.springproject.exception.DeleteCharacterException;
 import com.javarush.springproject.mapper.MapperRequest;
 import com.javarush.springproject.mapper.MapperResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,15 +40,20 @@ public class CharacterService {
             return true;
         } else return false;
     }
-    
+
+    @Transactional
     public void delete(Principal principal, CharacterRequestTo characterRequestTo) {
+        User user = getUserFromSession(principal);
         Character character = getCharacter(characterRequestTo.getName());
-        characterRepository.delete(character);
+        if (user.getCharacters().contains(character)) {
+            characterRepository.delete(character);
+        } else throw new DeleteCharacterException("This character not your");
     }
-    
-    public CharacterResponseTo updateCharacterName(CharacterRequestTo characterRequestTo) {
-        Character character = getCharacter(characterRequestTo.getName());
-        character.setName(characterRequestTo.getName());
+
+    @Transactional
+    public CharacterResponseTo updateCharacterName(String string) {
+        Character character = getCharacter(string);
+        character.setName(string);
         characterRepository.save(character);
         return MapperResponse.map(character);
     }

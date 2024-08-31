@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UserPage</title>
+    <style>
+        .form-container {
+            position: relative;
+        }
+
+        .submit-button {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .submit-button:hover {
+            background-color: #2e462e;
+        }
+    </style>
+</head>
+<body>
+<form th:action="@{/user/updateLogin}" th:method="put">
+    <label for="login" th:text="#{change_login}"></label>
+    <input type="text" id="login" name="editLogin"/>
+    <input type="submit" th:value="#{change}"/>
+</form>
+<br>
+<form th:action="@{/user/updatePassword}" th:method="put">
+    <label for="password" th:text="#{change_password}"></label>
+    <input type="text" id="password" name="editPassword" required>
+    <input type="submit" th:value="#{change}">
+</form>
+<br>
+<form th:action="@{/user/deleteUser}" th:method="delete">
+    <label th:text="#{delete_user}"></label>
+    <input type="submit" th:value="#{delete}"/>
+</form>
+<div class="form-container">
+    <form th:action="@{/index}" method="get">
+        <button type="submit" class="submit-button" th:value="#{home}"></button>
+    </form>
+</div>
+</body>
+</html>

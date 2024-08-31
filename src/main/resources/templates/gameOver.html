@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>You lose</title>
+    <title>GameOver</title>
 </head>
 <body>
 <h2>
     <span th:text="${loseAttribute}"></span>
     <br><br>
     <form action="/index" method="get">
-        <input type="submit" value="Начать сначала">
+        <input type="submit" th:value="#{start_over}">
     </form>
 </h2>
 </body>

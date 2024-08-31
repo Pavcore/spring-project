@@ -36,4 +36,13 @@ public class GlobalExceptionHandler {
         modelAndView.setViewName("dataError");
         return modelAndView;
     }
+    @ExceptionHandler(DeleteCharacterException.class)
+    @ResponseStatus()
+    public ModelAndView handleDeleteCharacterException(DeleteCharacterException ex) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("message", ex.getMessage());
+        modelAndView.addObject("path", "/index");
+        modelAndView.setViewName("dataError");
+        return modelAndView;
+    }
 }

@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>No login</title>
+    <title>Error</title>
 </head>
 <body>
 <h2>
     <span th:text="${message}"></span>
     <form th:action="${path}" method="get">
         <br>
-        <input type="submit" value="Попробовать снова">
+        <input type="submit" th:value="#{go_back}">
     </form>
 </h2>
 </body>

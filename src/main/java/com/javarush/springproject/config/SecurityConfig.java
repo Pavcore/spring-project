@@ -21,7 +21,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .permitAll()
-                        .defaultSuccessUrl("/index")
+                        .defaultSuccessUrl("/user")
                 ).build();
     }
 

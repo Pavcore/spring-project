@@ -6,13 +6,13 @@
 </head>
 <body>
 <h3>
-    Количество игр : <span th:text="${gameQuantity}"></span>
+    <label th:text="#{number_of_games}"></label> : <span th:text="${gameQuantity}"></span>
 </h3>
 <h3>
-    Список персонажей : <span th:text="${characterList}"></span>
+    <label th:text="#{list_of_characters}"></label> : <span th:text="${characterList}"></span>
 </h3>
 <form th:action="@{/gameWin}" method="get">
-    <input type="submit" value="Вернуться назад">
+    <input type="submit" th:value="#{go_back}">
 </form>
 </body>
 </html>

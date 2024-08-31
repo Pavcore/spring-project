@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>You win</title>
+    <title>GameWin</title>
 </head>
 <body>
 <h2>
@@ -11,10 +11,10 @@
     Вы прошли игру! Поздравляю!
     <br>
     <form th:action="@{/index}" method="get">
-        <input type="submit" value="Начать сначала">
+        <input type="submit" th:value="#{start_over}">
     </form>
     <form th:action="@{/statistic}" method="post">
-        <input type="submit" value="Посмотреть статистику">
+        <input type="submit" th:value="#{view_statistics}">
     </form>
 </h2>
 </body>

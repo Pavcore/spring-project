@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Greetings</title>
+    <title>Home</title>
 </head>
 <body>
 <h2>
@@ -24,32 +24,38 @@
     Советую поговорить с Акарой. Похоже, что она руководит этим лагерем. Может, она скажет вам больше.
     <br><br>
     <form th:action="@{/create}" method="post">
-        Введите имя персонажа: <label>
-        <input name="name"/>
-    </label>
-        <br><br>
-        Выберите класс персонажа:
-        <label>
-            <select name="characterClass">
-                <option>BARBARIAN</option>
-                <option>PALADIN</option>
-                <option>SORCERER</option>
-                <option>NECROMANCER</option>
-                <option>AMAZON</option>
-                <option>DRUID</option>
-                <option>ASSASSIN</option>
-            </select>
-        </label>
+        <div>
+            <label for="name" th:text="#{enter_character_name}"></label>
+            <input id="name" type="text" name="name">
+        </div>
         <br>
-        <input type="submit" value="Играть">
+        <div>
+            <label th:text="#{select_character_class}"></label>
+            <label>
+                <select name="characterClass">
+                    <option>BARBARIAN</option>
+                    <option>PALADIN</option>
+                    <option>SORCERER</option>
+                    <option>NECROMANCER</option>
+                    <option>AMAZON</option>
+                    <option>DRUID</option>
+                    <option>ASSASSIN</option>
+                </select>
+            </label>
+        </div>
+        <div>
+            <input type="submit" th:value="#{play}">
+        </div>
     </form>
     <br>
     <form th:action="@{/load}" method="post">
-        Если вы хотите поиграть за ранее созданного персонажа, введите его имя : <label>
-        <input name="createCharacter"/>
-    </label>
-        <br>
-        <input type="submit" value="Играть">
+        <div>
+            <label for="createCharacter" th:text="#{load_character}"></label>
+            <input id="createCharacter" name="createCharacter">
+        </div>
+        <div>
+            <input type="submit" th:value="#{play}">
+        </div>
     </form>
 </h2>
 </body>
