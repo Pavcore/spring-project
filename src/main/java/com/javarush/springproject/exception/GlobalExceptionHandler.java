@@ -10,36 +10,45 @@ import org.springframework.web.servlet.ModelAndView;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(CreateCharacterException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     public ModelAndView handleCreateCharacterException(CreateCharacterException ex) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("message", ex.getMessage());
-        modelAndView.addObject("path", "/index");
-        modelAndView.setViewName("dataError");
-        return modelAndView;
+        return handleException(modelAndView, ex);
     }
     @ExceptionHandler(LoadCharacterException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView handleLoadCharacterException(LoadCharacterException ex) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("message", ex.getMessage());
-        modelAndView.addObject("path", "/index");
-        modelAndView.setViewName("dataError");
-        return modelAndView;
+        return handleException(modelAndView, ex);
     }
     @ExceptionHandler(RegistrationException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView handleRegistrationException(RegistrationException ex) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("message", ex.getMessage());
-        modelAndView.addObject("path", "/");
-        modelAndView.setViewName("dataError");
-        return modelAndView;
+        return handleException(modelAndView, ex);
     }
     @ExceptionHandler(DeleteCharacterException.class)
-    @ResponseStatus()
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     public ModelAndView handleDeleteCharacterException(DeleteCharacterException ex) {
         ModelAndView modelAndView = new ModelAndView();
+        return handleException(modelAndView, ex);
+    }
+
+    @ExceptionHandler(LoginBusyException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ModelAndView handleLoginBusyException(LoginBusyException ex) {
+        ModelAndView modelAndView = new ModelAndView();
+        return handleException(modelAndView, ex);
+    }
+
+    @ExceptionHandler(UpdateCharacterNameException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ModelAndView handleUpdateCharacterNameException(UpdateCharacterNameException ex) {
+        ModelAndView modelAndView = new ModelAndView();
+        return handleException(modelAndView, ex);
+    }
+
+    private ModelAndView handleException(ModelAndView modelAndView ,RuntimeException ex) {
         modelAndView.addObject("message", ex.getMessage());
         modelAndView.addObject("path", "/index");
         modelAndView.setViewName("dataError");

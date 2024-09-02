@@ -1,8 +1,6 @@
 package com.javarush.springproject.controller;
 
 import com.javarush.springproject.dto.CharacterRequestTo;
-import com.javarush.springproject.exception.CreateCharacterException;
-import com.javarush.springproject.exception.LoadCharacterException;
 import com.javarush.springproject.service.CharacterService;
 import com.javarush.springproject.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +30,6 @@ public class IndexController {
     public ModelAndView create(@ModelAttribute CharacterRequestTo characterRequestTo,
                                ModelAndView modelAndView,
                                Principal principal) {
-        if (characterService.save(principal, characterRequestTo)) {
-            gameService.increaseGameAmount();
-            modelAndView.setViewName("redirect:/game");
-        } else throw new CreateCharacterException("This name already exists");
         return modelAndView;
     }
 
@@ -43,10 +37,6 @@ public class IndexController {
     public ModelAndView load(@RequestParam String createCharacter,
                              Principal principal,
                              ModelAndView modelAndView) {
-        if (characterService.haveCharacterCreated(principal, createCharacter)) {
-            gameService.increaseGameAmount();
-            modelAndView.setViewName("redirect:/game");
-        } else throw new LoadCharacterException("Character not found");
         return modelAndView;
     }
 }

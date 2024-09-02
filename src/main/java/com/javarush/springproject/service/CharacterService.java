@@ -1,17 +1,16 @@
 package com.javarush.springproject.service;
 
 import com.javarush.springproject.dbo.CharacterRepo;
-import com.javarush.springproject.dbo.UserRepo;
 import com.javarush.springproject.dto.CharacterRequestTo;
-import com.javarush.springproject.dto.CharacterResponseTo;
 import com.javarush.springproject.entity.Character;
 import com.javarush.springproject.entity.User;
-import com.javarush.springproject.exception.DeleteCharacterException;
+import com.javarush.springproject.exception.CreateCharacterException;
+import com.javarush.springproject.exception.UpdateCharacterNameException;
 import com.javarush.springproject.mapper.MapperRequest;
-import com.javarush.springproject.mapper.MapperResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.util.List;
@@ -20,60 +19,68 @@ import java.util.List;
 public class CharacterService {
 
     private final CharacterRepo characterRepository;
-
-    private final UserRepo userRepository;
+    private final UserService userService;
 
     @Autowired
-    public CharacterService(CharacterRepo characterRepository, UserRepo userRepository) {
+    public CharacterService(CharacterRepo characterRepository, UserService userService) {
         this.characterRepository = characterRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @Transactional
-    public boolean save(Principal principal, CharacterRequestTo characterRequestTo) {
-        User user = getUserFromSession(principal);
+    public ModelAndView save(Principal principal,
+                     CharacterRequestTo characterRequestTo,
+                     ModelAndView modelAndView) {
         Character byName = getCharacter(characterRequestTo.getName());
         if (byName == null) {
+            User user = userService.getUser(principal.getName());
             Character newCharacter = MapperRequest.map(characterRequestTo);
             newCharacter.setUser(user);
             characterRepository.save(newCharacter);
-            return true;
-        } else return false;
+            modelAndView.setViewName("redirect:/game");
+            return modelAndView;
+        } else throw new CreateCharacterException("This name already exists");
     }
 
     @Transactional
-    public void delete(Principal principal, CharacterRequestTo characterRequestTo) {
-        User user = getUserFromSession(principal);
-        Character character = getCharacter(characterRequestTo.getName());
-        if (user.getCharacters().contains(character)) {
-            characterRepository.delete(character);
-        } else throw new DeleteCharacterException("This character not your");
+    public ModelAndView load(String name, ModelAndView modelAndView) {
+        modelAndView.setViewName("redirect:/game");
+        return modelAndView;
     }
 
     @Transactional
-    public CharacterResponseTo updateCharacterName(String string) {
-        Character character = getCharacter(string);
-        character.setName(string);
-        characterRepository.save(character);
-        return MapperResponse.map(character);
+    public ModelAndView updateCharacterName(String oldName,
+                                            String newName,
+                                            ModelAndView modelAndView) {
+        if (getCharacter(newName) == null) {
+            Character character = getCharacter(oldName);
+            character.setName(newName);
+            characterRepository.save(character);
+            modelAndView.setViewName("redirect:/characters");
+            return modelAndView;
+        } else throw new UpdateCharacterNameException("This name is already taken");
     }
 
     @Transactional
-    public boolean haveCharacterCreated(Principal principal, String name) {
-        Character character = getCharacter(name);
-        User user = getUserFromSession(principal);
+    public ModelAndView deleteCharacter(String characterName,
+                                        ModelAndView modelAndView) {
+        characterRepository.delete(getCharacter(characterName));
+        modelAndView.setViewName("redirect:/characters");
+        return modelAndView;
+    }
+
+    @Transactional
+    public ModelAndView outputCharacterList(Principal principal,
+                                            ModelAndView modelAndView) {
+        User user = userService.getUser(principal.getName());
         List<Character> characterList = user.getCharacters();
-        return characterList.contains(character);
+        modelAndView.addObject("characters", characterList);
+        modelAndView.setViewName("characters");
+        return modelAndView;
     }
 
     private Character getCharacter(String name) {
         return characterRepository.findByName(name)
-                .findFirst()
-                .orElse(null);
-    }
-
-    private User getUserFromSession(Principal principal) {
-        return userRepository.findByLogin(principal.getName())
                 .findFirst()
                 .orElse(null);
     }

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Characters</title>
+    <style>
+        .action-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .action-container form {
+            margin: 0;
+        }
+
+        .action-container select {
+            padding: 5px;
+        }
+
+        .action-container input[type="text"] {
+            padding: 5px;
+        }
+
+        .action-container input[type="submit"] {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+    <style>
+        .user-button {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            padding: 10px 20px;
+            background-color: #f10707;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .user-button:hover {
+            background-color: #15e115;
+        }
+    </style>
+    <script>
+        function updateForms() {
+            var select = document.getElementsByName("characterSelect")[0];
+            var selectedValue = select.value;
+
+            var postInput = document.getElementById("characterPost");
+            if (postInput) {
+                postInput.value = selectedValue;
+                console.log("Set postInput.value to: " + selectedValue);
+            }
+            var updateInput = document.getElementById("characterUpdate");
+            if (updateInput) {
+                updateInput.value = selectedValue;
+                console.log("Set updateInput.value to: " + selectedValue);
+            }
+            var deleteInput = document.getElementById("characterDelete");
+            if (deleteInput) {
+                deleteInput.value = selectedValue;
+                console.log("Set deleteInput.value to: " + selectedValue);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            updateForms();
+        });
+    </script>
+</head>
+<body>
+<h1 th:text="#{list_of_characters}"></h1>
+<div class="action-container">
+    <select name="characterSelect" onchange="updateForms()">
+        <option th:each="character : ${characters}"
+                th:value="${character.name}"
+                th:text="${character.name} + ' : ' + ${character.characterClass}">
+        </option>
+    </select>
+    <form id="postForm" th:action="@{/characters/load}" method="post">
+        <input type="hidden" id="characterPost" name="characterName">
+        <input type="submit" th:value="#{play}">
+    </form>
+    <form id="updateForm" th:action="@{/characters/edit_character}" th:method="put">
+        <input type="hidden" id="characterUpdate" name="characterName">
+        <input type="text" name="newCharacterName" th:placeholder="#{enter_new_name}">
+        <input type="submit" th:value="#{update_name}">
+    </form>
+    <form id="deleteForm" th:action="@{/characters/delete_character}" th:method="delete">
+        <input type="hidden" id="characterDelete" name="characterName">
+        <input type="submit" th:value="#{delete}">
+    </form>
+</div>
+<br>
+<form th:action="@{/characters/create_character}" method="post">
+    <div>
+        <label for="name" th:text="#{enter_character_name}"></label>
+        <input id="name" type="text" name="name">
+    </div>
+    <br>
+    <div>
+        <label th:text="#{select_character_class}"></label>
+        <label>
+            <select name="characterClass">
+                <option>BARBARIAN</option>
+                <option>PALADIN</option>
+                <option>SORCERER</option>
+                <option>NECROMANCER</option>
+                <option>AMAZON</option>
+                <option>DRUID</option>
+                <option>ASSASSIN</option>
+            </select>
+        </label>
+    </div>
+    <div>
+        <input type="submit" th:value="#{play}">
+    </div>
+</form>
+<form th:action="@{/user}" method="get">
+    <input type="submit" class="user-button" th:value="#{user_page}">
+</form>
+</body>
+</html>

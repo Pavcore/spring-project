@@ -21,8 +21,12 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .permitAll()
-                        .defaultSuccessUrl("/user")
-                ).build();
+                        .defaultSuccessUrl("/user", true)
+                ).logout(logout -> logout.logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID"))
+                .build();
     }
 
     @Bean

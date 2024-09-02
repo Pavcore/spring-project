@@ -1,28 +1,24 @@
 package com.javarush.springproject.service;
 
-import com.javarush.springproject.dbo.UserRepo;
-import com.javarush.springproject.entity.Character;
-import com.javarush.springproject.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class GameService {
 
     private final AtomicLong atomicLong = new AtomicLong();
-    private final UserRepo userRepository;
+    private final UserService userService;
     private final QuestService questService;
     private int level = 1;
 
     @Autowired
-    public GameService(UserRepo userRepository, QuestService questService) {
-        this.userRepository = userRepository;
+    public GameService(UserService userService, QuestService questService) {
+        this.userService = userService;
         this.questService = questService;
     }
 
@@ -33,7 +29,7 @@ public class GameService {
     @Transactional
     public ModelAndView gameStatistics(Principal principal, ModelAndView modelAndView) {
         modelAndView.addObject("gameQuantity", gameQuantity());
-        modelAndView.addObject("characterList", getAllUserCharacters(principal));
+        modelAndView.addObject("characterList", userService.getAllUserCharacters(principal));
         modelAndView.setViewName("statistic");
         return modelAndView;
     }
@@ -58,14 +54,6 @@ public class GameService {
         modelAndView.setViewName("game");
         questService.setAttributeQuest(modelAndView, level);
         return modelAndView;
-    }
-
-    private List<Character> getAllUserCharacters(Principal principal) {
-        User user = userRepository
-                .findByLogin(principal.getName())
-                .findFirst()
-                .get();
-        return user.getCharacters();
     }
 
     private long gameQuantity() {
