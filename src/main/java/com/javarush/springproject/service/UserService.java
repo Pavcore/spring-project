@@ -4,6 +4,7 @@ import com.javarush.springproject.dbo.UserRepo;
 import com.javarush.springproject.dto.UserRequestTo;
 import com.javarush.springproject.entity.Character;
 import com.javarush.springproject.entity.User;
+import com.javarush.springproject.exception.DeleteUserWithCharacters;
 import com.javarush.springproject.exception.LoginBusyException;
 import com.javarush.springproject.mapper.MapperRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserService {
@@ -56,17 +58,19 @@ public class UserService {
     @Transactional
     public void deleteUser(Principal principal, ModelAndView modelAndView) {
         User user = getUser(principal.getName());
-        userRepository.delete(user);
-        modelAndView.setViewName("redirect:/");
+        if (user.getCharacters().isEmpty()) {
+            userRepository.delete(user);
+            modelAndView.setViewName("redirect:/login?logout");
+        }
+        throw new DeleteUserWithCharacters("You need delete your characters before deleting your profile");
     }
 
     @Transactional
     public List<Character> getAllUserCharacters(Principal principal) {
-        User user = userRepository
+        return Objects.requireNonNull(userRepository
                 .findByLogin(principal.getName())
                 .findFirst()
-                .get();
-        return user.getCharacters();
+                .orElse(null)).getCharacters();
     }
 
     @Transactional

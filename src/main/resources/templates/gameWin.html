@@ -2,19 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>GameWin</title>
+    <title th:text="#{game_win}"></title>
 </head>
 <body>
 <h2>
-    После возвращения вы видите радостные лица жителей лагеря. Все благодарят вас за помощь. Варрив предлагает отправиться на восток.
+    <label th:text="#{after}"></label>
     <br>
-    Вы прошли игру! Поздравляю!
+    <label th:text="#{quest_completed}"></label>
     <br>
-    <form th:action="@{/index}" method="get">
+    <form th:action="@{/characters}" method="get">
         <input type="submit" th:value="#{start_over}">
-    </form>
-    <form th:action="@{/statistic}" method="post">
-        <input type="submit" th:value="#{view_statistics}">
     </form>
 </h2>
 </body>

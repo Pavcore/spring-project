@@ -19,12 +19,18 @@ public class Character {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", length = 32)
     private String name;
 
-    @Column(name = "character_class")
+    @Column(name = "character_class", length = 32)
     @Enumerated(value = EnumType.STRING)
     private CharacterClass characterClass;
+
+    @Column(name = "game_quantity", nullable = false)
+    private long gameQuantity;
+
+    @Column(name = "win_quantity", nullable = false)
+    private long winQuantity;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -44,6 +50,7 @@ public class Character {
 
     @Override
     public String toString() {
-        return String.format("Имя - %s, класс - %s", name, characterClass);
+        return String.format("Имя - %s, класс - %s, Попытки - %d, Победы - %d",
+                name, characterClass, gameQuantity, winQuantity);
     }
 }

@@ -10,6 +10,8 @@ public class CharacterResponseTo {
     private Long id;
     private String name;
     private CharacterClass characterClass;
+    private long gameQuantity;
+    private long winQuantity;
     private UserResponseTo userResponse;
 
 }

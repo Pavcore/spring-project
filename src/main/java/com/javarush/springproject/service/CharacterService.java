@@ -5,8 +5,12 @@ import com.javarush.springproject.dto.CharacterRequestTo;
 import com.javarush.springproject.entity.Character;
 import com.javarush.springproject.entity.User;
 import com.javarush.springproject.exception.CreateCharacterException;
+import com.javarush.springproject.exception.DeleteCharacterException;
+import com.javarush.springproject.exception.LoadCharacterException;
 import com.javarush.springproject.exception.UpdateCharacterNameException;
 import com.javarush.springproject.mapper.MapperRequest;
+import com.javarush.springproject.mapper.MapperResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,30 +33,45 @@ public class CharacterService {
 
     @Transactional
     public ModelAndView save(Principal principal,
-                     CharacterRequestTo characterRequestTo,
-                     ModelAndView modelAndView) {
+                             CharacterRequestTo characterRequestTo,
+                             ModelAndView modelAndView,
+                             HttpSession httpSession) {
         Character byName = getCharacter(characterRequestTo.getName());
         if (byName == null) {
             User user = userService.getUser(principal.getName());
             Character newCharacter = MapperRequest.map(characterRequestTo);
             newCharacter.setUser(user);
+            long gameQuantity = newCharacter.getGameQuantity() + 1L;
+            newCharacter.setGameQuantity(gameQuantity);
             characterRepository.save(newCharacter);
-            modelAndView.setViewName("redirect:/game");
+            httpSession.setAttribute("character", MapperResponse.map(newCharacter));
+            modelAndView.setViewName("redirect:/index");
             return modelAndView;
         } else throw new CreateCharacterException("This name already exists");
     }
 
     @Transactional
-    public ModelAndView load(String name, ModelAndView modelAndView) {
-        modelAndView.setViewName("redirect:/game");
-        return modelAndView;
+    public ModelAndView load(Principal principal,
+                             String name,
+                             ModelAndView modelAndView,
+                             HttpSession httpSession) {
+        User user = userService.getUser(principal.getName());
+        Character character = getCharacter(name);
+        if (user.getCharacters().contains(character)) {
+            modelAndView.setViewName("redirect:/index");
+            long gameQuantity = character.getGameQuantity() + 1L;
+            character.setGameQuantity(gameQuantity);
+            characterRepository.save(character);
+            httpSession.setAttribute("character", MapperResponse.map(character));
+            return modelAndView;
+        } else throw new LoadCharacterException("You do not own this character");
     }
 
     @Transactional
     public ModelAndView updateCharacterName(String oldName,
                                             String newName,
                                             ModelAndView modelAndView) {
-        if (getCharacter(newName) == null) {
+        if (getCharacter(newName) == null && newName != null && !newName.isEmpty()) {
             Character character = getCharacter(oldName);
             character.setName(newName);
             characterRepository.save(character);
@@ -64,9 +83,11 @@ public class CharacterService {
     @Transactional
     public ModelAndView deleteCharacter(String characterName,
                                         ModelAndView modelAndView) {
-        characterRepository.delete(getCharacter(characterName));
-        modelAndView.setViewName("redirect:/characters");
-        return modelAndView;
+        if (characterName != null && !characterName.isEmpty()) {
+            characterRepository.delete(getCharacter(characterName));
+            modelAndView.setViewName("redirect:/characters");
+            return modelAndView;
+        } else throw new DeleteCharacterException("I don't see a character");
     }
 
     @Transactional
@@ -79,9 +100,15 @@ public class CharacterService {
         return modelAndView;
     }
 
-    private Character getCharacter(String name) {
+    @Transactional
+    public Character getCharacter(String name) {
         return characterRepository.findByName(name)
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Transactional
+    public void saveGameStatistic(Character character){
+        characterRepository.save(character);
     }
 }

@@ -2,16 +2,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Stat</title>
+    <title th:text="#{stat}"></title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
-<h3>
-    <label th:text="#{number_of_games}"></label> : <span th:text="${gameQuantity}"></span>
-</h3>
-<h3>
-    <label th:text="#{list_of_characters}"></label> : <span th:text="${characterList}"></span>
-</h3>
-<form th:action="@{/gameWin}" method="get">
+<h1 th:text="#{list_of_characters}"></h1>
+<table>
+    <thead>
+    <tr>
+        <th th:text="#{name}"></th>
+        <th th:text="#{class}"></th>
+        <th th:text="#{game_quantity}"></th>
+        <th th:text="#{win_quantity}"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="character : ${characters}">
+        <td th:text="${character.name}"></td>
+        <td th:text="${character.characterClass}"></td>
+        <td th:text="${character.gameQuantity}"></td>
+        <td th:text="${character.winQuantity}"></td>
+    </tr>
+    </tbody>
+</table>
+<form th:action="@{/index}" method="get">
     <input type="submit" th:value="#{go_back}">
 </form>
 </body>

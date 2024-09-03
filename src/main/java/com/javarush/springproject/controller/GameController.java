@@ -1,6 +1,7 @@
 package com.javarush.springproject.controller;
 
 import com.javarush.springproject.service.GameService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,8 +32,10 @@ public class GameController {
     }
 
     @PostMapping("/mainGame")
-    public ModelAndView mainStage(@RequestParam String nextStage, ModelAndView modelAndView) {
-        return gameService.mainGame(nextStage, modelAndView);
+    public ModelAndView mainStage(@RequestParam String nextStage,
+                                  ModelAndView modelAndView,
+                                  HttpSession session) {
+        return gameService.mainGame(nextStage, modelAndView, session);
     }
 
     @PostMapping("/statistic")

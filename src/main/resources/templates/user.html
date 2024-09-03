@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>UserPage</title>
+    <title th:text="#{user_page}"></title>
     <style>
         .character-button {
+            font-size: 16px;
             position: absolute;
             bottom: 10px;
             right: 10px;
             padding: 10px 20px;
-            background-color: #30b0a1;
+            background-color: #867b7b;
             color: white;
             border: none;
             cursor: pointer;
@@ -21,20 +22,21 @@
         }
     </style>
     <style>
-        .logout-button {
+        .back-button {
+            font-size: 16px;
             position: absolute;
             bottom: 10px;
             left: 10px;
             padding: 10px 20px;
-            background-color: #f10707;
+            background-color: #867b7b;
             color: white;
             border: none;
             cursor: pointer;
             border-radius: 5px;
         }
 
-        .logout-button:hover {
-            background-color: #15e115;
+        .back-button:hover {
+            background-color: #096be5;
         }
     </style>
 </head>
@@ -59,7 +61,7 @@
     <input type="submit" class="character-button" th:value="#{characters}">
 </form>
 <form th:action="@{/logout}" method="post">
-    <input type="submit" class="logout-button" th:value="#{logout}"/>
+    <input type="submit" class="back-button" th:value="#{logout}"/>
 </form>
 </body>
 </html>

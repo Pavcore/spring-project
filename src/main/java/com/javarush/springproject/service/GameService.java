@@ -1,40 +1,41 @@
 package com.javarush.springproject.service;
 
+import com.javarush.springproject.dto.CharacterResponseTo;
+import com.javarush.springproject.entity.Character;
+import com.javarush.springproject.mapper.MapperResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class GameService {
 
-    private final AtomicLong atomicLong = new AtomicLong();
     private final UserService userService;
     private final QuestService questService;
+    private final CharacterService characterService;
     private int level = 1;
 
     @Autowired
-    public GameService(UserService userService, QuestService questService) {
+    public GameService(UserService userService, QuestService questService, CharacterService characterService) {
         this.userService = userService;
         this.questService = questService;
-    }
-
-    public void increaseGameAmount() {
-        atomicLong.getAndIncrement();
+        this.characterService = characterService;
     }
 
     @Transactional
     public ModelAndView gameStatistics(Principal principal, ModelAndView modelAndView) {
-        modelAndView.addObject("gameQuantity", gameQuantity());
-        modelAndView.addObject("characterList", userService.getAllUserCharacters(principal));
+        modelAndView.addObject("characters", userService.getAllUserCharacters(principal));
         modelAndView.setViewName("statistic");
         return modelAndView;
     }
 
-    public ModelAndView mainGame(String nextStage, ModelAndView modelAndView) {
+    public ModelAndView mainGame(String nextStage,
+                                 ModelAndView modelAndView,
+                                 HttpSession httpSession) {
         modelAndView.setViewName("game");
         if (nextStage != null && nextStage.equals("lose")) {
             questService.setAttributeQuest(modelAndView, level);
@@ -42,6 +43,11 @@ public class GameService {
             modelAndView.setViewName("gameOver");
         } else if (level == questService.getLengthQuest()) {
             level = 1;
+            CharacterResponseTo characterResponseTo = (CharacterResponseTo) httpSession.getAttribute("character");
+            Character character = MapperResponse.map(characterResponseTo);
+            long gameQuantity = character.getWinQuantity() + 1L;
+            character.setWinQuantity(gameQuantity);
+            characterService.saveGameStatistic(character);
             modelAndView.setViewName("gameWin");
         } else {
             level++;
@@ -54,9 +60,5 @@ public class GameService {
         modelAndView.setViewName("game");
         questService.setAttributeQuest(modelAndView, level);
         return modelAndView;
-    }
-
-    private long gameQuantity() {
-        return atomicLong.get();
     }
 }

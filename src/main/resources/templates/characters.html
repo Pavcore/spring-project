@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Characters</title>
+    <title th:text="#{characters}"></title>
     <style>
         .action-container {
             display: flex;
@@ -29,11 +29,12 @@
     </style>
     <style>
         .user-button {
+            font-size: 16px;
             position: absolute;
             bottom: 10px;
             left: 10px;
             padding: 10px 20px;
-            background-color: #f10707;
+            background-color: #867b7b;
             color: white;
             border: none;
             cursor: pointer;
@@ -41,7 +42,7 @@
         }
 
         .user-button:hover {
-            background-color: #15e115;
+            background-color: #096be5;
         }
     </style>
     <script>
@@ -82,7 +83,7 @@
     </select>
     <form id="postForm" th:action="@{/characters/load}" method="post">
         <input type="hidden" id="characterPost" name="characterName">
-        <input type="submit" th:value="#{play}">
+        <input type="submit" th:value="#{next_page}">
     </form>
     <form id="updateForm" th:action="@{/characters/edit_character}" th:method="put">
         <input type="hidden" id="characterUpdate" name="characterName">
@@ -116,7 +117,7 @@
         </label>
     </div>
     <div>
-        <input type="submit" th:value="#{play}">
+        <input type="submit" th:value="#{next_page}">
     </div>
 </form>
 <form th:action="@{/user}" method="get">

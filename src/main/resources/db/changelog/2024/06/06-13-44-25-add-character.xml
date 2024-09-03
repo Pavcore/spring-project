@@ -9,10 +9,16 @@
             <column name="id" type="bigserial">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="name" type="varchar(64)">
+            <column name="name" type="varchar(32)">
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="character_class" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="game_quantity" type="bigint" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="win_quantity" type="bigint" defaultValue="0">
                 <constraints nullable="false"/>
             </column>
             <column name="user_id" type="bigint">

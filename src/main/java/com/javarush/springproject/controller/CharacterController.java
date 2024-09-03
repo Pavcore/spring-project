@@ -2,6 +2,7 @@ package com.javarush.springproject.controller;
 
 import com.javarush.springproject.dto.CharacterRequestTo;
 import com.javarush.springproject.service.CharacterService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,16 +25,19 @@ public class CharacterController {
     }
 
     @PostMapping("/characters/load")
-    public ModelAndView load(@RequestParam String characterName,
-                             ModelAndView modelAndView) {
-        return characterService.load(characterName, modelAndView);
+    public ModelAndView load(Principal principal,
+                             @RequestParam String characterName,
+                             ModelAndView modelAndView,
+                             HttpSession session) {
+        return characterService.load(principal, characterName, modelAndView, session);
     }
 
     @PostMapping("/characters/create_character")
     public ModelAndView createCharacter(Principal principal,
                                         @ModelAttribute CharacterRequestTo characterRequestTo,
-                                        ModelAndView modelAndView) {
-        return characterService.save(principal, characterRequestTo, modelAndView);
+                                        ModelAndView modelAndView,
+                                        HttpSession session) {
+        return characterService.save(principal, characterRequestTo, modelAndView, session);
     }
 
     @PutMapping("/characters/edit_character")

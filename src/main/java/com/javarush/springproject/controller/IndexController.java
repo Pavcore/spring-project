@@ -1,42 +1,31 @@
 package com.javarush.springproject.controller;
 
-import com.javarush.springproject.dto.CharacterRequestTo;
-import com.javarush.springproject.service.CharacterService;
-import com.javarush.springproject.service.GameService;
+import com.javarush.springproject.service.IndexService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.security.Principal;
 
 @RestController("/index")
 public class IndexController {
 
-    private final CharacterService characterService;
-    private final GameService gameService;
+    private final IndexService indexService;
 
     @Autowired
-    public IndexController(CharacterService characterService, GameService gameService) {
-        this.characterService = characterService;
-        this.gameService = gameService;
+    public IndexController(IndexService indexService) {
+        this.indexService = indexService;
     }
 
     @GetMapping("/index")
-    public ModelAndView home() {
+    public ModelAndView index() {
         return new ModelAndView("index");
     }
 
-    @PostMapping("/create")
-    public ModelAndView create(@ModelAttribute CharacterRequestTo characterRequestTo,
-                               ModelAndView modelAndView,
-                               Principal principal) {
-        return modelAndView;
-    }
-
-    @PostMapping("/load")
-    public ModelAndView load(@RequestParam String createCharacter,
-                             Principal principal,
+    @PostMapping("/index/back_page")
+    public ModelAndView post(HttpSession session,
                              ModelAndView modelAndView) {
-        return modelAndView;
+        return indexService.backPage(modelAndView, session);
     }
 }

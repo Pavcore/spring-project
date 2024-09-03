@@ -13,24 +13,31 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ModelAndView handleCreateCharacterException(CreateCharacterException ex) {
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("path", "/characters");
         return handleException(modelAndView, ex);
     }
+
     @ExceptionHandler(LoadCharacterException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView handleLoadCharacterException(LoadCharacterException ex) {
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("path", "/characters");
         return handleException(modelAndView, ex);
     }
+
     @ExceptionHandler(RegistrationException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView handleRegistrationException(RegistrationException ex) {
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("path", "/registration");
         return handleException(modelAndView, ex);
     }
+
     @ExceptionHandler(DeleteCharacterException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ModelAndView handleDeleteCharacterException(DeleteCharacterException ex) {
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("path", "/characters");
         return handleException(modelAndView, ex);
     }
 
@@ -38,6 +45,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ModelAndView handleLoginBusyException(LoginBusyException ex) {
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("path", "/user");
         return handleException(modelAndView, ex);
     }
 
@@ -45,12 +53,20 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ModelAndView handleUpdateCharacterNameException(UpdateCharacterNameException ex) {
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("path", "/characters");
         return handleException(modelAndView, ex);
     }
 
-    private ModelAndView handleException(ModelAndView modelAndView ,RuntimeException ex) {
+    @ExceptionHandler(DeleteUserWithCharacters.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ModelAndView handleDeleteUserWithCharacter(DeleteUserWithCharacters ex) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("path", "/user");
+        return handleException(modelAndView, ex);
+    }
+
+    private ModelAndView handleException(ModelAndView modelAndView, RuntimeException ex) {
         modelAndView.addObject("message", ex.getMessage());
-        modelAndView.addObject("path", "/index");
         modelAndView.setViewName("dataError");
         return modelAndView;
     }

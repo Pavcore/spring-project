@@ -20,10 +20,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "login")
+    @Column(name = "login", length = 32)
     private String login;
 
-    @Column(name = "password")
+    @Column(name = "password", length = 64)
     private String password;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
@@ -34,7 +34,6 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", name='" + login + '\'' +
-                ", password='" + password + '\'' +
                 '}';
     }
 }

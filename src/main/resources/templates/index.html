@@ -1,62 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Home</title>
+    <title th:text="#{home}"></title>
+    <style>
+        .stat-button {
+            background-color: #867b7b;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .stat-button:hover {
+            background-color: #096be5;
+        }
+
+        .play-button {
+            font-size: 16px;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            background-color: #867b7b;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .play-button:hover {
+            background-color: #096be5;
+        }
+
+        .back-button {
+            font-size: 16px;
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            padding: 10px 20px;
+            background-color: #867b7b;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .back-button:hover {
+            background-color: #096be5;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .submit-container {
+            margin-top: auto;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .submit-container input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 <h2>
-    Приветствую странник. Я не сильно удивлен твоему появлению. Здесь появлялось много искателей приключений с тех пор,
-    как начались неприятности.
-    <br><br>
-    Не сомневаюсь, тебе известно о трагедии, которая произошла в Тристраме. Говорят, что Диабло, Повелитель Ужаса, снова
-    пришел в мир.
-    <br><br>
-    Не знаю, верить мне в это или нет, но Темный Странник прошел этим несколько недель назад. Он направился на восток к
-    горам, пройдя путем, который охранялся Монастырем Бродяг.
-    <br><br>
-    Может это и ничего не значит, но зло оставило след там, где он прошел. Спустя небольшое время после его прохода,
-    Монастырские Ворота закрылись, и странные существа начали появляться в стране.
-    <br><br>
-    До тех пор, пока за пределами лагеря не станет безопасней и ворота снова не откроются, я буду оставаться здесь со
-    своим караваном. Я надеюсь, что доберусь до Лут Голейна прежде, чем тень из Тристрама поглотит нас всех. Если вы
-    будете живы и будете здесь, я могу взять вас с собой.
-    <br><br>
-    Советую поговорить с Акарой. Похоже, что она руководит этим лагерем. Может, она скажет вам больше.
-    <br><br>
-    <form th:action="@{/create}" method="post">
-        <div>
-            <label for="name" th:text="#{enter_character_name}"></label>
-            <input id="name" type="text" name="name">
-        </div>
-        <br>
-        <div>
-            <label th:text="#{select_character_class}"></label>
-            <label>
-                <select name="characterClass">
-                    <option>BARBARIAN</option>
-                    <option>PALADIN</option>
-                    <option>SORCERER</option>
-                    <option>NECROMANCER</option>
-                    <option>AMAZON</option>
-                    <option>DRUID</option>
-                    <option>ASSASSIN</option>
-                </select>
-            </label>
-        </div>
-        <div>
-            <input type="submit" th:value="#{play}">
-        </div>
-    </form>
+    <label th:text="#{hello_stranger}"></label>
     <br>
-    <form th:action="@{/load}" method="post">
-        <div>
-            <label for="createCharacter" th:text="#{load_character}"></label>
-            <input id="createCharacter" name="createCharacter">
-        </div>
-        <div>
-            <input type="submit" th:value="#{play}">
-        </div>
-    </form>
+    <br>
+    <label th:text="#{diablo}"></label>
+    <br>
+    <br>
+    <label th:text="#{dont}"></label>
+    <br>
+    <br>
+    <label th:text="#{maybe}"></label>
+    <br>
+    <br>
+    <label th:text="#{lut_gholein}"></label>
+    <br>
+    <br>
+    <label th:text="#{akara}"></label>
 </h2>
+<form th:action="@{/index/back_page}" method="post">
+    <input type="submit" class="back-button" th:value="#{characters}">
+</form>
+<div class="submit-container">
+    <form th:action="@{/statistic}" method="post">
+        <input type="submit" class="stat-button" th:value="#{view_statistics}">
+    </form>
+</div>
+<form th:action="@{/game}" method="get">
+    <input type="submit" class="play-button" th:value="#{play}">
+</form>
 </body>
 </html>
