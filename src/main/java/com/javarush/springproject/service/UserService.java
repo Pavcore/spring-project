@@ -43,7 +43,7 @@ public class UserService {
         if (getUser(editLogin) == null) {
             user.setLogin(editLogin);
             userRepository.save(user);
-            modelAndView.setViewName("redirect:/user");
+            modelAndView.setViewName("redirect:/users");
         } else throw new LoginBusyException("This login is already taken");
     }
 
@@ -52,7 +52,7 @@ public class UserService {
         User user = getUser(principal.getName());
         user.setPassword(passwordEncoder.encode(editPassword));
         userRepository.save(user);
-        modelAndView.setViewName("redirect:/user");
+        modelAndView.setViewName("redirect:/users");
     }
 
     @Transactional

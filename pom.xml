@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.2</version>
+        <version>3.3.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.javarush</groupId>
     <artifactId>spring-project</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.7</version>
     <name>spring-project</name>
     <description>spring-project</description>
     <url/>
@@ -27,7 +27,7 @@
         <url/>
     </scm>
     <properties>
-        <java.version>21</java.version>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -86,6 +86,9 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <mainClass>
+                        com.javarush.springproject.SpringProjectApplication
+                    </mainClass>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>

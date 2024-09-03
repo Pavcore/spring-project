@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ModelAndView handleLoginBusyException(LoginBusyException ex) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("path", "/user");
+        modelAndView.addObject("path", "/users");
         return handleException(modelAndView, ex);
     }
 
@@ -61,7 +61,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ModelAndView handleDeleteUserWithCharacter(DeleteUserWithCharacters ex) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("path", "/user");
+        modelAndView.addObject("path", "/users");
         return handleException(modelAndView, ex);
     }
 

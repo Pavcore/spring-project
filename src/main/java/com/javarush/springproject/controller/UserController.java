@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 
-@RestController("/user")
+@RestController
 public class UserController {
 
     private final UserService userService;
@@ -17,13 +17,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user")
+    @GetMapping("/users")
     public ModelAndView startPage(ModelAndView modelAndView) {
-        modelAndView.setViewName("/user");
+        modelAndView.setViewName("users");
         return modelAndView;
     }
 
-    @PutMapping("/user/updateLogin")
+    @PutMapping("/users/updateLogin")
     public ModelAndView updateLogin(@RequestParam String editLogin,
                                     Principal principal,
                                     ModelAndView modelAndView) {
@@ -31,7 +31,7 @@ public class UserController {
         return modelAndView;
     }
 
-    @PutMapping("/user/updatePassword")
+    @PutMapping("/users/updatePassword")
     public ModelAndView updatePassword(@RequestParam String editPassword,
                                        Principal principal,
                                        ModelAndView modelAndView) {
@@ -39,7 +39,7 @@ public class UserController {
         return modelAndView;
     }
 
-    @DeleteMapping("/user/deleteUser")
+    @DeleteMapping("/users/deleteUser")
     public ModelAndView deleteUser(Principal principal, ModelAndView modelAndView) {
         userService.deleteUser(principal, modelAndView);
         return modelAndView;

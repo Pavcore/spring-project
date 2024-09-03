@@ -41,19 +41,19 @@
     </style>
 </head>
 <body>
-<form th:action="@{/user/updateLogin}" th:method="put">
+<form th:action="@{/users/updateLogin}" th:method="put">
     <label for="login" th:text="#{change_login}"></label>
     <input type="text" id="login" name="editLogin"/>
     <input type="submit" th:value="#{change}"/>
 </form>
 <br>
-<form th:action="@{/user/updatePassword}" th:method="put">
+<form th:action="@{/users/updatePassword}" th:method="put">
     <label for="password" th:text="#{change_password}"></label>
     <input type="text" id="password" name="editPassword" required>
     <input type="submit" th:value="#{change}">
 </form>
 <br>
-<form th:action="@{/user/deleteUser}" th:method="delete">
+<form th:action="@{/users/deleteUser}" th:method="delete">
     <label th:text="#{delete_user}"></label>
     <input type="submit" th:value="#{delete}"/>
 </form>
