@@ -27,5 +27,4 @@ public class IndexService {
         modelAndView.setViewName("redirect:/characters");
         return modelAndView;
     }
-
 }

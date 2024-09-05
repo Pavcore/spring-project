@@ -1,4 +1,4 @@
-package com.javarush.springproject.dbo;
+package com.javarush.springproject.repository;
 
 import com.javarush.springproject.entity.Quest;
 import org.springframework.data.repository.CrudRepository;

@@ -1,6 +1,6 @@
 package com.javarush.springproject.service;
 
-import com.javarush.springproject.dbo.CharacterRepo;
+import com.javarush.springproject.repository.CharacterRepo;
 import com.javarush.springproject.dto.CharacterRequestTo;
 import com.javarush.springproject.entity.Character;
 import com.javarush.springproject.entity.User;
@@ -103,7 +103,6 @@ public class CharacterService {
     @Transactional
     public Character getCharacter(String name) {
         return characterRepository.findByName(name)
-                .findFirst()
                 .orElse(null);
     }
 

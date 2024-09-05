@@ -1,6 +1,6 @@
 package com.javarush.springproject.service;
 
-import com.javarush.springproject.dbo.QuestRepo;
+import com.javarush.springproject.repository.QuestRepo;
 import com.javarush.springproject.entity.Quest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

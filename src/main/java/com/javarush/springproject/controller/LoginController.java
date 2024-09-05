@@ -22,7 +22,7 @@ public class LoginController {
 
     @GetMapping("/")
     public ModelAndView empty() {
-        return new ModelAndView("/login");
+        return new ModelAndView("redirect:/login");
     }
 
     @GetMapping("/login")
